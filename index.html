@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The 1849 Baltimore Dossier | Le Chevalier Dupin Inquiry</title>
+  <meta name="description" content="An interactive forensic investigation into the mysterious disappearance and death of Edgar Allan Poe in Baltimore, October 1849.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a0b0d;
+      --bg-card: #13151a;
+      --bg-card-hover: #1b1e26;
+      --gold: #d4af37;
+      --gold-light: #f3e5ab;
+      --gold-dim: #997d26;
+      --crimson: #8b1e1e;
+      --crimson-light: #b92b2b;
+      --parchment: #e9e4d4;
+      --parchment-muted: #a39e8f;
+      --border-gold: rgba(212, 175, 55, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--parchment);
+      font-family: 'EB Garamond', serif;
+      font-size: 19px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 10% 40%, rgba(139, 30, 30, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(20, 24, 32, 0.9) 0%, transparent 70%);
+      background-attachment: fixed;
+    }
+
+    /* Ambient noise & vignette */
+    .vignette-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      box-shadow: inset 0 0 100px rgba(0,0,0,0.85);
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border-gold);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10, 11, 13, 0.85);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 90;
+    }
+
+    .brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-seal {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    }
+
+    .brand-title {
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      letter-spacing: 2px;
+      color: var(--gold-light);
+      text-transform: uppercase;
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: var(--parchment-muted);
+      letter-spacing: 1px;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-toggle {
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-light);
+      padding: 6px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      letter-spacing: 1px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-toggle:hover {
+      background: var(--gold);
+      color: var(--bg-dark);
+      box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+    }
+
+    .btn-toggle.active {
+      background: var(--gold);
+      color: var(--bg-dark);
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 30px 20px 80px;
+    }
+
+    /* Hero Case Intro */
+    .case-brief {
+      text-align: center;
+      padding: 40px 10px 30px;
+    }
+
+    .case-tag {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: inline-block;
+      padding: 4px 16px;
+      border: 1px solid var(--border-gold);
+      background: rgba(212, 175, 55, 0.05);
+    }
+
+    .case-title {
+      font-family: 'Cinzel', serif;
+      font-size: 34px;
+      line-height: 1.25;
+      color: var(--gold-light);
+      margin-bottom: 18px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    }
+
+    @media (min-width: 640px) {
+      .case-title { font-size: 44px; }
+    }
+
+    .case-lead {
+      max-width: 720px;
+      margin: 0 auto 28px;
+      font-size: 20px;
+      color: #cfc9ba;
+    }
+
+    /* Investigator Notice */
+    .investigator-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-left: 4px solid var(--gold);
+      padding: 20px 24px;
+      border-radius: 4px;
+      margin-bottom: 45px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    @media (min-width: 600px) {
+      .investigator-card {
+        flex-direction: row;
+      }
+    }
+
+    .dupin-thumb {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--gold);
+      flex-shrink: 0;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+    }
+
+    .dupin-quote {
+      font-style: italic;
+      color: var(--gold-light);
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+
+    .dupin-attrib {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      letter-spacing: 1px;
+      color: var(--parchment-muted);
+    }
+
+    /* Relics Section */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 24px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      padding-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 22px;
+      color: var(--gold-light);
+      letter-spacing: 1px;
+    }
+
+    .evidence-counter {
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      color: var(--gold);
+      background: rgba(212, 175, 55, 0.1);
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border-gold);
+    }
+
+    .relics-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-bottom: 50px;
+    }
+
+    @media (min-width: 768px) {
+      .relics-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .relic-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .relic-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--gold);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.7), 0 0 15px rgba(212, 175, 55, 0.2);
+    }
+
+    .relic-card.inspected {
+      border-color: var(--gold);
+    }
+
+    .relic-card.inspected::after {
+      content: "✓ EXAMINED";
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(212, 175, 55, 0.95);
+      color: #000;
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 3px 8px;
+      border-radius: 3px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+      z-index: 10;
+    }
+
+    .relic-img-wrap {
+      width: 100%;
+      height: 230px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .relic-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .relic-card:hover .relic-img-wrap img {
+      transform: scale(1.06);
+    }
+
+    .relic-badge {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      background: rgba(10, 11, 13, 0.85);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-light);
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      padding: 3px 8px;
+      letter-spacing: 1px;
+    }
+
+    .relic-body {
+      padding: 20px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .relic-title {
+      font-family: 'Cinzel', serif;
+      font-size: 18px;
+      color: var(--gold-light);
+      margin-bottom: 8px;
+    }
+
+    .relic-teaser {
+      font-size: 16px;
+      color: var(--parchment-muted);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .relic-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--gold);
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      letter-spacing: 1px;
+      font-weight: bold;
+    }
+
+    /* Modal Dossier */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(5, 6, 8, 0.88);
+      backdrop-filter: blur(8px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      z-index: 200;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-dossier {
+      background: #14161c;
+      border: 1px solid var(--gold);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.9), 0 0 30px rgba(212, 175, 55, 0.2);
+      max-width: 650px;
+      width: 100%;
+      border-radius: 6px;
+      overflow: hidden;
+      animation: modalFadeIn 0.3s ease;
+      position: relative;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-header {
+      padding: 16px 22px;
+      background: rgba(212, 175, 55, 0.1);
+      border-bottom: 1px solid var(--border-gold);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 16px;
+      color: var(--gold-light);
+      letter-spacing: 2px;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--gold);
+      font-size: 24px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .modal-body {
+      padding: 24px;
+      max-height: 75vh;
+      overflow-y: auto;
+    }
+
+    .modal-img-frame {
+      width: 100%;
+      height: 240px;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      border: 1px solid var(--border-gold);
+    }
+
+    .modal-img-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .forensic-stamp {
+      display: inline-block;
+      border: 2px solid var(--crimson);
+      color: var(--crimson-light);
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 3px 10px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      transform: rotate(-1.5deg);
+    }
+
+    .modal-text {
+      font-size: 18px;
+      line-height: 1.65;
+      color: var(--parchment);
+      margin-bottom: 20px;
+    }
+
+    .modal-finding {
+      background: rgba(212, 175, 55, 0.08);
+      border-left: 3px solid var(--gold);
+      padding: 12px 16px;
+      font-style: italic;
+      color: var(--gold-light);
+      margin-bottom: 20px;
+      font-size: 17px;
+    }
+
+    /* Deduction Section */
+    .deduction-section {
+      background: #111318;
+      border: 1px solid var(--border-gold);
+      border-radius: 6px;
+      padding: 35px 24px;
+      margin-bottom: 50px;
+      text-align: center;
+      position: relative;
+    }
+
+    .deduction-section::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 50%; transform: translateX(-50%);
+      width: 120px; height: 2px;
+      background: var(--gold);
+    }
+
+    .deduction-title {
+      font-family: 'Cinzel', serif;
+      font-size: 26px;
+      color: var(--gold-light);
+      margin-bottom: 12px;
+    }
+
+    .deduction-subtitle {
+      max-width: 600px;
+      margin: 0 auto 30px;
+      color: var(--parchment-muted);
+      font-size: 18px;
+    }
+
+    .choices-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      max-width: 650px;
+      margin: 0 auto 25px;
+    }
+
+    .choice-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: var(--parchment);
+      padding: 16px 20px;
+      border-radius: 4px;
+      font-family: 'EB Garamond', serif;
+      font-size: 19px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .choice-btn:hover {
+      background: rgba(212, 175, 55, 0.12);
+      border-color: var(--gold);
+      transform: translateX(4px);
+      color: var(--gold-light);
+    }
+
+    .choice-number {
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+
+    /* Revelation / Climax Box */
+    .revelation-box {
+      display: none;
+      background: #0f1116;
+      border: 2px solid var(--gold);
+      padding: 30px 24px;
+      border-radius: 6px;
+      margin-top: 30px;
+      text-align: left;
+      animation: modalFadeIn 0.4s ease;
+      box-shadow: 0 0 35px rgba(212, 175, 55, 0.2);
+    }
+
+    .revelation-box.active {
+      display: block;
+    }
+
+    .revelation-headline {
+      font-family: 'Cinzel', serif;
+      font-size: 22px;
+      color: var(--gold-light);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .revelation-quote {
+      font-style: italic;
+      font-size: 19px;
+      color: var(--gold-light);
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .revelation-text {
+      color: var(--parchment);
+      font-size: 18px;
+      line-height: 1.65;
+      margin-bottom: 24px;
+    }
+
+    /* Book Purchase Card */
+    .purchase-section {
+      background: linear-gradient(180deg, #161820 0%, #0c0d11 100%);
+      border: 1px solid var(--border-gold);
+      border-radius: 6px;
+      padding: 40px 24px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      align-items: center;
+    }
+
+    @media (min-width: 768px) {
+      .purchase-section {
+        flex-direction: row;
+        padding: 45px 35px;
+        align-items: center;
+      }
+    }
+
+    .book-display {
+      flex: 1;
+      max-width: 280px;
+      text-align: center;
+      position: relative;
+    }
+
+    .book-cover-img {
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.9), 0 0 20px rgba(212, 175, 55, 0.25);
+      transition: transform 0.4s ease;
+    }
+
+    .book-cover-img:hover {
+      transform: scale(1.03) rotate(-1deg);
+    }
+
+    .price-pill {
+      position: absolute;
+      bottom: -10px;
+      right: 10px;
+      background: var(--crimson);
+      border: 2px solid var(--gold);
+      color: #fff;
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+    }
+
+    .purchase-details {
+      flex: 1.4;
+    }
+
+    .purchase-tag {
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .purchase-title {
+      font-family: 'Cinzel', serif;
+      font-size: 28px;
+      line-height: 1.25;
+      color: var(--gold-light);
+      margin-bottom: 12px;
+    }
+
+    .purchase-meta {
+      font-size: 16px;
+      color: var(--parchment-muted);
+      margin-bottom: 16px;
+    }
+
+    .purchase-desc {
+      font-size: 18px;
+      color: var(--parchment);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .btn-amazon-cta {
+      display: inline-block;
+      background: linear-gradient(135deg, #d4af37 0%, #b89127 100%);
+      color: #0d0f12;
+      font-family: 'Cinzel', serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 16px 32px;
+      border-radius: 4px;
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+      transition: all 0.25s ease;
+      border: 1px solid #ffe885;
+      text-align: center;
+      width: 100%;
+    }
+
+    @media (min-width: 600px) {
+      .btn-amazon-cta { width: auto; }
+    }
+
+    .btn-amazon-cta:hover {
+      background: linear-gradient(135deg, #fae27a 0%, #d4af37 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(212, 175, 55, 0.5);
+    }
+
+    .formats-label {
+      font-size: 13px;
+      color: var(--parchment-muted);
+      letter-spacing: 1px;
+      margin-top: 14px;
+      display: block;
+    }
+
+    footer {
+      border-top: 1px solid rgba(212, 175, 55, 0.15);
+      padding: 30px 20px;
+      text-align: center;
+      font-size: 14px;
+      color: var(--parchment-muted);
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="vignette-overlay"></div>
+
+  <!-- Header -->
+  <header>
+    <a href="#" class="brand-lockup">
+      <img src="assets/daragan_seal.jpg" alt="Sir Leonard Daragan Seal" class="brand-seal">
+      <div>
+        <div class="brand-title">The Archive</div>
+        <div class="brand-subtitle">Codex 1849 // Daragan Folios</div>
+      </div>
+    </a>
+    <div class="header-controls">
+      <button id="soundToggle" class="btn-toggle" title="Toggle Atmospheric Audio">🔊 <span id="soundText">Sound ON</span></button>
+      <button id="langToggle" class="btn-toggle active" title="Switch Language">🇺🇸 EN | 🇪🇸 ES</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero Case Brief -->
+    <section class="case-brief">
+      <span class="case-tag" id="t-tag">CLASSIFIED CASE FILE #1849-POE</span>
+      <h1 class="case-title" id="t-hero-title">The Seven Deaths of Edgar Allan Poe</h1>
+      <p class="case-lead" id="t-hero-lead">
+        On October 3, 1849, America’s master of the macabre was found delirious in a rain-drenched Baltimore cellar wearing another man’s frayed clothes. He was carrying no identification, his $1,500 was gone, and his hollow cane was missing its 24-inch blade.
+      </p>
+
+      <!-- Investigator Notice -->
+      <div class="investigator-card">
+        <img src="assets/dupin_portrait.jpg" alt="Le Chevalier C. Auguste Dupin" class="dupin-thumb">
+        <div>
+          <div class="dupin-quote" id="t-dupin-quote">
+            “The conclusion is mathematical: The unfortunate man who expired in Tower Ward II did not die of alcohol. He was executed by substitution.”
+          </div>
+          <div class="dupin-attrib" id="t-dupin-attrib">— Le Chevalier C. Auguste Dupin, No. 33 Rue Dunôt, Paris</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Relics Examination -->
+    <section>
+      <div class="section-header">
+        <h2 class="section-title" id="t-relics-title">Phase I: The Physical Relics</h2>
+        <div class="evidence-counter" id="evidenceCounter">0 / 3 Relics Examined</div>
+      </div>
+
+      <div class="relics-grid">
+        <!-- Relic 1: Blade -->
+        <article class="relic-card" id="card-relic1" onclick="openRelicModal(1)">
+          <div class="relic-img-wrap">
+            <img src="assets/relic1_blade.jpg" alt="The Concealed Toledo Blade">
+            <span class="relic-badge">EXHIBIT C-24</span>
+          </div>
+          <div class="relic-body">
+            <div>
+              <h3 class="relic-title" id="t-r1-title">The Concealed Blade</h3>
+              <p class="relic-teaser" id="t-r1-teaser">Dr. Carter's hollow Malacca cane lay in the gutter beside Poe—but its 24-inch Toledo steel rapier was missing.</p>
+            </div>
+            <span class="relic-action" id="t-inspect-btn">Inspect Relic ➔</span>
+          </div>
+        </article>
+
+        <!-- Relic 2: Watch -->
+        <article class="relic-card" id="card-relic2" onclick="openRelicModal(2)">
+          <div class="relic-img-wrap">
+            <img src="assets/relic2_watch.jpg" alt="The Death Watch">
+            <span class="relic-badge">EXHIBIT A-09</span>
+          </div>
+          <div class="relic-body">
+            <div>
+              <h3 class="relic-title" id="t-r2-title">The Death Watch</h3>
+              <p class="relic-teaser" id="t-r2-teaser">Recovered from the pocket of the coarse bombazine coat. The hands are permanently frozen at 3:15.</p>
+            </div>
+            <span class="relic-action" id="t-inspect-btn-2">Inspect Relic ➔</span>
+          </div>
+        </article>
+
+        <!-- Relic 3: Seal -->
+        <article class="relic-card" id="card-relic3" onclick="openRelicModal(3)">
+          <div class="relic-img-wrap">
+            <img src="assets/relic3_seal.jpg" alt="The Cleaved Monogram">
+            <span class="relic-badge">EXHIBIT B-12</span>
+          </div>
+          <div class="relic-body">
+            <div>
+              <h3 class="relic-title" id="t-r3-title">The Cleaved Monogram</h3>
+              <p class="relic-teaser" id="t-r3-teaser">Hidden in Elmira Shelton's bronze clock. A charcoal-grey wax seal cleaved cleanly in two.</p>
+            </div>
+            <span class="relic-action" id="t-inspect-btn-3">Inspect Relic ➔</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Phase II: The Ratiocination Deduction -->
+    <section class="deduction-section">
+      <h2 class="deduction-title" id="t-deduce-title">Phase II: Formulate Your Deduction</h2>
+      <p class="deduction-subtitle" id="t-deduce-sub">
+        Based on the three suppressed relics, what caused the demise of Edgar Allan Poe in Baltimore?
+      </p>
+
+      <div class="choices-grid">
+        <button class="choice-btn" onclick="makeDeduction(1)">
+          <span class="choice-number">I</span>
+          <span id="t-c1">Violent Cooping Abduction: Drugged and forced into fraudulent voting cellars.</span>
+        </button>
+        <button class="choice-btn" onclick="makeDeduction(2)">
+          <span class="choice-number">II</span>
+          <span id="t-c2">Lethal Identity Substitution: Murdered on the B&O railroad by a coordinated doppelgänger.</span>
+        </button>
+        <button class="choice-btn" onclick="makeDeduction(3)">
+          <span class="choice-number">III</span>
+          <span id="t-c3">The Polar Delirium: Consumed by a reality tear while calling the name 'Reynolds'.</span>
+        </button>
+      </div>
+
+      <!-- The Revelation Box -->
+      <div class="revelation-box" id="revelationBox">
+        <h3 class="revelation-headline">⚖️ <span id="t-rev-head">Dupin's Evaluation: Deduction Incomplete</span></h3>
+        <p class="revelation-quote" id="t-rev-quote">
+          “You observe accurately, yet you limit your scope to three dimensions. The medical registers, the missing blade, and the cleaved seal do not contradict each other—they branch.”
+        </p>
+        <p class="revelation-text" id="t-rev-text">
+          Edgar Allan Poe did not die once in Baltimore. His final 96 hours opened an impossible fissure across seven branching realities. In one reality, he expired in Ryan’s cellar. In another, his double boarded the Ohio train with his $1,500. And in the seventh, he stares directly at you through the dark.
+        </p>
+      </div>
+    </section>
+
+    <!-- Book Purchase CTA -->
+    <section class="purchase-section">
+      <div class="book-display">
+        <img src="assets/book_mockup.png" alt="The Shadow at Gunner's Hall Novel Mockup" class="book-cover-img">
+        <div class="price-pill" id="t-price-pill">$3.99 KINDLE</div>
+      </div>
+      <div class="purchase-details">
+        <div class="purchase-tag" id="t-book-tag">THE ARCHIVE OF LOST AUTHORS • BOOK I</div>
+        <h2 class="purchase-title">The Shadow at Gunner's Hall</h2>
+        <div class="purchase-meta" id="t-book-meta">A Gothic Historical Thriller by Sir Leonard Daragan</div>
+        <p class="purchase-desc" id="t-book-desc">
+          Five missing days. $1,500 in cash. Seven ways to die. Step into the gaslit fog of 1849 Baltimore as Chevalier Auguste Dupin investigates the impossible death of his own creator. A 100% complete, standalone historical mystery.
+        </p>
+        <a href="https://www.amazon.com/dp/B0HN98S77P" target="_blank" rel="noopener noreferrer" class="btn-amazon-cta" id="t-cta-btn">
+          Read On Amazon Now ➔
+        </a>
+        <span class="formats-label" id="t-formats">AVAILABLE IN HARDCOVER • PAPERBACK • KINDLE</span>
+      </div>
+    </section>
+  </main>
+
+  <!-- Relic Detail Modal -->
+  <div class="modal-overlay" id="relicModal" onclick="closeModalOnBg(event)">
+    <div class="modal-dossier">
+      <div class="modal-header">
+        <h3 id="m-title">EXHIBIT DETAILS</h3>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-img-frame">
+          <img id="m-img" src="" alt="">
+        </div>
+        <span class="forensic-stamp" id="m-stamp">VERIFIED 1849 ARTIFACT</span>
+        <p class="modal-text" id="m-text"></p>
+        <div class="modal-finding" id="m-finding"></div>
+        <button class="btn-toggle" style="width: 100%; padding: 12px;" onclick="closeModal()" id="m-btn-confirm">Acknowledge Clue ➔</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 1849 / 2026 The Archive of Lost Authors. Curated by Sir Leonard Daragan.</p>
+    <p style="margin-top: 6px; font-size: 12px; opacity: 0.7;">Official interactive companion dossier for <em>The Shadow at Gunner's Hall</em> (ASIN: B0HN98S77P).</p>
+  </footer>
+
+  <script>
+    // Audio Synthesizer (Web Audio API - No external mp3 files!)
+    let audioEnabled = true;
+    let audioCtx = null;
+
+    function getAudioCtx() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      return audioCtx;
+    }
+
+    function playTick() {
+      if (!audioEnabled) return;
+      try {
+        const ctx = getAudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(1400, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.04);
+        gain.gain.setValueAtTime(0.08, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.04);
+      } catch(e){}
+    }
+
+    function playChime() {
+      if (!audioEnabled) return;
+      try {
+        const ctx = getAudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+        osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.6);
+        gain.gain.setValueAtTime(0.12, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.8);
+      } catch(e){}
+    }
+
+    // Bilingual Data Store
+    let currentLang = 'en';
+    const inspectedRelics = new Set();
+
+    const i18n = {
+      en: {
+        tag: "CLASSIFIED CASE FILE #1849-POE",
+        heroTitle: "The Seven Deaths of Edgar Allan Poe",
+        heroLead: "On October 3, 1849, America’s master of the macabre was found delirious in a rain-drenched Baltimore cellar wearing another man’s frayed clothes. He was carrying no identification, his $1,500 was gone, and his hollow cane was missing its 24-inch blade.",
+        dupinQuote: "“The conclusion is mathematical: The unfortunate man who expired in Tower Ward II did not die of alcohol. He was executed by substitution.”",
+        dupinAttrib: "— Le Chevalier C. Auguste Dupin, No. 33 Rue Dunôt, Paris",
+        relicsTitle: "Phase I: The Physical Relics",
+        r1Title: "The Concealed Blade",
+        r1Teaser: "Dr. Carter's hollow Malacca cane lay in the gutter beside Poe—but its 24-inch Toledo steel rapier was missing.",
+        r2Title: "The Death Watch",
+        r2Teaser: "Recovered from the pocket of the coarse bombazine coat. The hands are permanently frozen at 3:15.",
+        r3Title: "The Cleaved Monogram",
+        r3Teaser: "Hidden in Elmira Shelton's bronze clock. A charcoal-grey wax seal cleaved cleanly in two.",
+        inspectBtn: "Inspect Relic ➔",
+        counterText: "{n} / 3 Relics Examined",
+        deduceTitle: "Phase II: Formulate Your Deduction",
+        deduceSub: "Based on the three suppressed relics, what caused the demise of Edgar Allan Poe in Baltimore?",
+        c1: "Violent Cooping Abduction: Drugged and forced into fraudulent voting cellars.",
+        c2: "Lethal Identity Substitution: Murdered on the B&O railroad by a coordinated doppelgänger.",
+        c3: "The Polar Delirium: Consumed by a reality tear while calling the name 'Reynolds'.",
+        revHead: "Dupin's Evaluation: Deduction Incomplete",
+        revQuote: "“You observe accurately, yet you limit your scope to three dimensions. The medical registers, the missing blade, and the cleaved seal do not contradict each other—they branch.”",
+        revText: "Edgar Allan Poe did not die once in Baltimore. His final 96 hours opened an impossible fissure across seven branching realities. In one reality, he expired in Ryan’s cellar. In another, his double boarded the Ohio train with his $1,500. And in the seventh, he stares directly at you through the dark.",
+        bookTag: "THE ARCHIVE OF LOST AUTHORS • BOOK I",
+        bookMeta: "A Gothic Historical Thriller by Sir Leonard Daragan",
+        bookDesc: "Five missing days. $1,500 in cash. Seven ways to die. Step into the gaslit fog of 1849 Baltimore as Chevalier Auguste Dupin investigates the impossible death of his own creator. A 100% complete, standalone historical mystery.",
+        ctaBtn: "Read On Amazon Now ➔",
+        formats: "AVAILABLE IN HARDCOVER • PAPERBACK • KINDLE",
+        soundOn: "Sound ON",
+        soundOff: "Sound OFF",
+        pricePill: "$3.99 KINDLE",
+        mAck: "Acknowledge Clue ➔",
+        // Relic Modal Contents
+        relics: {
+          1: {
+            title: "EXHIBIT C-24 // THE TOLEDO BLADE",
+            stamp: "FORENSIC DISPATCH • SWAN TAVERN",
+            text: "Hours before boarding the midnight steamer to Baltimore, Poe swapped canes with Dr. John Carter at Richmond's Swan Tavern. Carter’s physician daybook confirms the Malacca shaft contained a spring-loaded, triangular 24-inch Toledo tempered rapier.",
+            finding: "CRITICAL FINDING: When found dying in the gutter at Ryan's 4th Ward Polls, the cane lay beside him, but the inner blade was entirely gone. In whose ribs was it left?"
+          },
+          2: {
+            title: "EXHIBIT A-09 // THE DEATH WATCH",
+            stamp: "AUTOPSY RECOVERY • TOWER WARD II",
+            text: "Recovered from the pocket of the frayed, ill-fitting bombazine coat Poe wore at Gunner's Hall. The crystal face is cracked, and the brass hands stopped at precisely 3:15.",
+            finding: "CRITICAL FINDING: Dr. John Moran's hospital ledger confirms that Poe’s violent nocturnal delirium commenced in Tower Ward II at the exact hour the watch ceased ticking."
+          },
+          3: {
+            title: "EXHIBIT B-12 // THE CLEAVED MONOGRAM",
+            stamp: "EVIDENCE SEIZURE • RICHMOND",
+            text: "Retrieved from the pendulum cavity of Elmira Shelton’s French bronze clock. The unmailed testament bore Poe's authentic signature, sealed with a Roman 'P' in dark charcoal beeswax, cleaved cleanly down the middle by a razor edge.",
+            finding: "CRITICAL FINDING: The testament proves Poe was aware that an imposter had assumed his identity and boarded the westbound train to Ohio with his $1,500."
+          }
+        }
+      },
+      es: {
+        tag: "EXPEDIENTE CLASIFICADO #1849-POE",
+        heroTitle: "Las Siete Muertes de Edgar Allan Poe",
+        heroLead: "El 3 de octubre de 1849, el maestro de lo macabro fue hallado delirando en el sótano de una taberna de Baltimore bajo la lluvia, vistiendo la ropa raída de otro hombre. No llevaba identificación, sus $1,500 habían desaparecido y a su bastón hueco le faltaba una hoja de 24 pulgadas.",
+        dupinQuote: "“La conclusión es matemática: El desdichado hombre que expiró en la Sala de la Torre II no murió de alcoholismo. Fue ejecutado por sustitución.”",
+        dupinAttrib: "— Le Chevalier C. Auguste Dupin, No. 33 Rue Dunôt, París",
+        relicsTitle: "Fase I: Las Reliquias Físicas",
+        r1Title: "La Hoja Oculta",
+        r1Teaser: "El bastón de malacca del Dr. Carter yacía en la cuneta junto a Poe, pero el estoque de acero de Toledo de 24 pulgadas había desaparecido.",
+        r2Title: "El Reloj de la Muerte",
+        r2Teaser: "Recuperado del bolsillo del abrigo ajeno. Las manecillas quedaron congeladas a las 3:15 en punto.",
+        r3Title: "El Monograma Hendido",
+        r3Teaser: "Oculto en el reloj de bronce de Elmira Shelton. Un sello de cera gris cortado limpiamente en dos.",
+        inspectBtn: "Examinar Reliquia ➔",
+        counterText: "{n} / 3 Reliquias Examinadas",
+        deduceTitle: "Fase II: Formule su Deducción",
+        deduceSub: "Basado en las tres reliquias censuradas, ¿qué provocó la muerte de Edgar Allan Poe en Baltimore?",
+        c1: "Secuestro Electoral ('Cooping'): Envenenado y forzado a votar fraudulentamente en sótanos de tabernas.",
+        c2: "Sustitución Letal de Identidad: Asesinado en el ferrocarril B&O por un doble coordinado.",
+        c3: "El Delirio Polar: Consumido por una grieta en la realidad mientras gritaba el nombre 'Reynolds'.",
+        revHead: "Evaluación de Dupin: Deducción Incompleta",
+        revQuote: "“Observa con precisión, pero limita su mente a tres dimensiones. Los registros médicos, la hoja perdida y el sello hendido no se contradicen: se ramifican.”",
+        revText: "Edgar Allan Poe no murió una sola vez en Baltimore. Sus últimas 96 horas abrieron una grieta imposible a través de siete realidades divergentes. En una murió en el sótano electoral. En otra, su doble abordó el tren con sus $1,500. Y en la séptima, lo mira a usted fijamente a través de la oscuridad.",
+        bookTag: "EL ARCHIVO DE AUTORES PERDIDOS • LIBRO I",
+        bookMeta: "Un Thriller Histórico Gótico por Sir Leonard Daragan",
+        bookDesc: "Cinco días desaparecidos. $1,500 en efectivo. Siete formas de morir. Adéntrese en la niebla a gas de Baltimore en 1849 mientras el detective Auguste Dupin investiga la imposible muerte de su propio creador. Novela 100% completa e independiente.",
+        ctaBtn: "Leer en Amazon Ahora ➔",
+        formats: "DISPONIBLE EN TAPA DURA • TAPA BLANDA • KINDLE",
+        soundOn: "Sonido ACTIVADO",
+        soundOff: "Sonido SILENCIADO",
+        pricePill: "$3.99 KINDLE",
+        mAck: "Confirmar Evidencia ➔",
+        relics: {
+          1: {
+            title: "PRUEBA C-24 // LA HOJA DE TOLEDO",
+            stamp: "INFORME FORENSE • SWAN TAVERN",
+            text: "Horas antes de subir al vapor nocturno hacia Baltimore, Poe intercambió bastones con el Dr. John Carter en Richmond. El libro de notas del médico confirma que el bastón de malacca contenía un estoque de acero de Toledo de 24 pulgadas con mecanismo de resorte.",
+            finding: "HALLAZGO CRÍTICO: Al ser encontrado agonizando en Ryan's 4th Ward Polls, el bastón yacía a su lado, pero la hoja interior había desaparecido por completo. ¿En las costillas de quién quedó clavada?"
+          },
+          2: {
+            title: "PRUEBA A-09 // EL RELOJ DE LA MUERTE",
+            stamp: "RECUPERACIÓN FORENSE • SALA DE LA TORRE II",
+            text: "Hallado en el bolsillo del abrigo raído que llevaba Poe en Gunner's Hall. El cristal está fracturado y las manecillas de latón se detuvieron exactamente a las 3:15.",
+            finding: "HALLAZGO CRÍTICO: El registro del hospital del Dr. John Moran confirma que el violento delirio nocturno de Poe comenzó exactamente a la misma hora en que el reloj dejó de latir."
+          },
+          3: {
+            title: "PRUEBA B-12 // EL MONOGRAMA HENDIDO",
+            stamp: "INCAUTACIÓN DE PRUEBAS • RICHMOND",
+            text: "Extraído de la cavidad del péndulo del reloj de bronce francés de Elmira Shelton. El testamento no enviado llevaba la firma auténtica de Poe y un sello de cera gris con una 'P' romana, cortado limpiamente por el filo de una navaja.",
+            finding: "HALLAZGO CRÍTICO: El documento demuestra que Poe sabía que un impostor había asumido su identidad y abordado el tren hacia Ohio con sus $1,500 en efectivo."
+          }
+        }
+      }
+    };
+
+    function updateLanguage(lang) {
+      currentLang = lang;
+      const t = i18n[lang];
+
+      document.getElementById('t-tag').textContent = t.tag;
+      document.getElementById('t-hero-title').textContent = t.heroTitle;
+      document.getElementById('t-hero-lead').textContent = t.heroLead;
+      document.getElementById('t-dupin-quote').textContent = t.dupinQuote;
+      document.getElementById('t-dupin-attrib').textContent = t.dupinAttrib;
+      document.getElementById('t-relics-title').textContent = t.relicsTitle;
+
+      document.getElementById('t-r1-title').textContent = t.r1Title;
+      document.getElementById('t-r1-teaser').textContent = t.r1Teaser;
+      document.getElementById('t-r2-title').textContent = t.r2Title;
+      document.getElementById('t-r2-teaser').textContent = t.r2Teaser;
+      document.getElementById('t-r3-title').textContent = t.r3Title;
+      document.getElementById('t-r3-teaser').textContent = t.r3Teaser;
+
+      document.getElementById('t-inspect-btn').textContent = t.inspectBtn;
+      document.getElementById('t-inspect-btn-2').textContent = t.inspectBtn;
+      document.getElementById('t-inspect-btn-3').textContent = t.inspectBtn;
+
+      document.getElementById('t-deduce-title').textContent = t.deduceTitle;
+      document.getElementById('t-deduce-sub').textContent = t.deduceSub;
+      document.getElementById('t-c1').textContent = t.c1;
+      document.getElementById('t-c2').textContent = t.c2;
+      document.getElementById('t-c3').textContent = t.c3;
+
+      document.getElementById('t-rev-head').textContent = t.revHead;
+      document.getElementById('t-rev-quote').textContent = t.revQuote;
+      document.getElementById('t-rev-text').textContent = t.revText;
+
+      document.getElementById('t-book-tag').textContent = t.bookTag;
+      document.getElementById('t-book-meta').textContent = t.bookMeta;
+      document.getElementById('t-book-desc').textContent = t.bookDesc;
+      document.getElementById('t-cta-btn').textContent = t.ctaBtn;
+      document.getElementById('t-formats').textContent = t.formats;
+      document.getElementById('t-price-pill').textContent = t.pricePill;
+      document.getElementById('m-btn-confirm').textContent = t.mAck;
+
+      updateCounter();
+    }
+
+    function updateCounter() {
+      const t = i18n[currentLang];
+      const count = inspectedRelics.size;
+      document.getElementById('evidenceCounter').textContent = t.counterText.replace('{n}', count);
+    }
+
+    // Modal Interaction
+    let currentRelicId = 1;
+    const relicImages = {
+      1: "assets/relic1_blade.jpg",
+      2: "assets/relic2_watch.jpg",
+      3: "assets/relic3_seal.jpg"
+    };
+
+    function openRelicModal(id) {
+      currentRelicId = id;
+      playTick();
+      const t = i18n[currentLang].relics[id];
+      document.getElementById('m-title').textContent = t.title;
+      document.getElementById('m-stamp').textContent = t.stamp;
+      document.getElementById('m-text').textContent = t.text;
+      document.getElementById('m-finding').textContent = t.finding;
+      document.getElementById('m-img').src = relicImages[id];
+      document.getElementById('relicModal').classList.add('active');
+
+      // Mark inspected
+      inspectedRelics.add(id);
+      document.getElementById(`card-relic${id}`).classList.add('inspected');
+      updateCounter();
+    }
+
+    function closeModal() {
+      playTick();
+      document.getElementById('relicModal').classList.remove('active');
+    }
+
+    function closeModalOnBg(e) {
+      if (e.target.id === 'relicModal') {
+        closeModal();
+      }
+    }
+
+    // Deduction Trigger
+    function makeDeduction(choiceId) {
+      playChime();
+      const revBox = document.getElementById('revelationBox');
+      revBox.classList.add('active');
+      revBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Toggle Handlers
+    document.getElementById('langToggle').addEventListener('click', () => {
+      playTick();
+      const newLang = currentLang === 'en' ? 'es' : 'en';
+      updateLanguage(newLang);
+    });
+
+    document.getElementById('soundToggle').addEventListener('click', () => {
+      audioEnabled = !audioEnabled;
+      document.getElementById('soundText').textContent = audioEnabled ? i18n[currentLang].soundOn : i18n[currentLang].soundOff;
+      if (audioEnabled) playTick();
+    });
+
+    // Initialize
+    updateLanguage('en');
+  </script>
+</body>
+</html>
