@@ -15,9 +15,10 @@ A high-converting, 90-second bilingual (English / Spanish) interactive forensic 
 ## 📁 Repository Structure
 ```
 ├── index.html                 # Complete standalone SPA (HTML5 + CSS + Web Audio + Bilingual JS)
-├── assets/                    # Photorealistic 8K forensic still-lifes & 3D book mockup
-│   ├── book_mockup.png        # 3D Hardcover Mockup of The Shadow at Gunner's Hall
-│   ├── daragan_seal.jpg       # Royal Gold Seal Emblem of Sir Leonard Daragan
+├── assets/                    # Optimized forensic still-lifes & bilingual 3D book mockups
+│   ├── book_mockup_en.jpg     # 3D Hardcover Mockup (English: The Shadow at Gunner's Hall)
+│   ├── book_mockup_es.jpg     # 3D Hardcover Mockup (Spanish: La Sombra en Gunner's Hall)
+│   ├── daragan_seal.jpg       # Royal Gold Seal Emblem of Sir Leonard Daragan (9 KB optimized)
 │   ├── dupin_portrait.jpg     # Le Chevalier C. Auguste Dupin in his 1849 Parisian Study
 │   ├── hero_banner.jpg        # Baltimore Wharf at Night
 │   ├── relic1_blade.jpg       # Toledo Steel Rapier & Dr. Carter's Malacca Cane
