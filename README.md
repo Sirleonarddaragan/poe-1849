@@ -1,64 +1,52 @@
-# The 1849 Baltimore Dossier (Interactive Companion Web App)
-**Official Interactive Companion to *The Shadow at Gunner's Hall: The Seven Deaths of Edgar Allan Poe***  
-**Curated by Sir Leonard Daragan (The Archive of Lost Authors)**
+# The 1849 Baltimore Dossier (Interactive Companion Archive)
+### *Official Companion to The Shadow at Gunner's Hall: The Seven Deaths of Edgar Allan Poe*
+**Curated by Sir Leonard Daragan // The Archive of Lost Authors · Codex Press**
+
+[![Live Interactive Archive](https://img.shields.io/badge/Live_Archive-GitHub_Pages-d4af37?style=for-the-badge&logo=github)](https://sirleonarddaragan.github.io/poe-1849/)
+[![Amazon Book](https://img.shields.io/badge/Amazon-The_Shadow_at_Gunner's_Hall_(B0HN98S77P)-f59e0b?style=for-the-badge&logo=amazon&logoColor=white)](https://www.amazon.com/dp/B0HN98S77P)
+[![Substack](https://img.shields.io/badge/Substack-Field_Dispatches-ff6719?style=for-the-badge&logo=substack&logoColor=white)](https://sirleonarddaragan.substack.com)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-Sponsor_Archive-13C3FF?style=for-the-badge&logo=kofi&logoColor=white)](https://ko-fi.com/sirleonarddaragan)
 
 ---
 
 ## 🏛️ Overview
-A high-converting, 90-second bilingual (English / Spanish) interactive forensic dossier where readers play as Le Chevalier C. Auguste Dupin examining the 3 suppressed physical relics of Edgar Allan Poe's October 1849 disappearance.
 
-* **Target URL on GitHub Pages:** `https://sirleonarddaragan.github.io/poe-1849/` (or `gunners-hall`)
-* **Amazon Target:** [The Shadow at Gunner's Hall (ASIN: B0HN98S77P)](https://www.amazon.com/dp/B0HN98S77P)
+A zero-dependency, 100% bilingual (**English / Spanish**) interactive forensic dossier where readers investigate alongside **Le Chevalier C. Auguste Dupin**, examining the three suppressed physical relics of Edgar Allan Poe's October 1849 Baltimore disappearance.
+
+* **Live Archive:** [`https://sirleonarddaragan.github.io/poe-1849/`](https://sirleonarddaragan.github.io/poe-1849/)
+* **Read the Book on Amazon:** [*The Shadow at Gunner's Hall* (`B0HN98S77P`)](https://www.amazon.com/dp/B0HN98S77P)
+* **Author Catalog:** [Amazon Author Central](https://www.amazon.com/author/sirleonarddaragan)
 
 ---
 
-## 📁 Repository Structure
-```
-├── index.html                 # Complete standalone SPA (HTML5 + CSS + Web Audio + Bilingual JS)
+## 📁 Repository Architecture
+
+```text
+├── index.html                 # Complete standalone SPA (HTML5 + CSS + Web Audio + EN/ES JS)
 ├── assets/                    # Optimized forensic still-lifes & bilingual 3D book mockups
-│   ├── book_mockup_en.jpg     # 3D Hardcover Mockup (English: The Shadow at Gunner's Hall)
-│   ├── book_mockup_es.jpg     # 3D Hardcover Mockup (Spanish: La Sombra en Gunner's Hall)
-│   ├── daragan_seal.jpg       # Royal Gold Seal Emblem of Sir Leonard Daragan (9 KB optimized)
+│   ├── book_mockup_en.jpg     # Hardcover Edition (EN: The Shadow at Gunner's Hall)
+│   ├── book_mockup_es.jpg     # Hardcover Edition (ES: La Sombra en Gunner's Hall)
+│   ├── daragan_seal.jpg       # Royal Gold Seal Emblem of Sir Leonard Daragan
 │   ├── dupin_portrait.jpg     # Le Chevalier C. Auguste Dupin in his 1849 Parisian Study
 │   ├── hero_banner.jpg        # Baltimore Wharf at Night
 │   ├── relic1_blade.jpg       # Toledo Steel Rapier & Dr. Carter's Malacca Cane
 │   ├── relic2_watch.jpg       # Antique Brass Watch Stopped at 3:15 & Scalpel
 │   └── relic3_seal.jpg        # Cleaved Grey Wax Monogram & Unmailed Richmond Letter
-└── README.md                  # Deployment Guide
+└── README.md
 ```
 
 ---
 
-## 🚀 How to Deploy to GitHub Pages in 2 Minutes
+## 🌌 The Daragan Codex Constellation (All 5 Systems)
 
-### Method 1: Using GitHub Desktop / Git CLI
-1. Initialize git in this directory:
-   ```bash
-   cd C:\Users\rick\.gemini\antigravity\scratch\poe_1849_dossier
-   git init
-   git add .
-   git commit -m "Initial commit: 1849 Baltimore Dossier interactive web app"
-   ```
-2. Create a new repository on your GitHub account (`sirleonarddaragan`):
-   * Repository Name: `poe-1849` (or `the-shadow-at-gunners-hall`)
-   * Public: **Yes**
-3. Link and push:
-   ```bash
-   git remote add origin https://github.com/sirleonarddaragan/poe-1849.git
-   git branch -M main
-   git push -u origin main
-   ```
-4. On GitHub.com, go to **Settings** ➔ **Pages**:
-   * Source: **Deploy from a branch**
-   * Branch: **main** / **(root)** ➔ Click **Save**.
-
-Your live URL will be active immediately at:  
-👉 **`https://sirleonarddaragan.github.io/poe-1849/`**
+* **The Arcane Liquidator // Default Judgment:** [Live Terminal](https://sirleonarddaragan.github.io/ring-minus-two/) · [GitHub](https://github.com/Sirleonarddaragan/ring-minus-two)
+* **Applied Cyber-Occultism:** [Live Suite](https://sirleonarddaragan.github.io/applied-cyber-occultism/) · [Amazon Catalog](https://www.amazon.com/author/sirleonarddaragan)
+* **The Cybernetic I-Ching:** [Live Oracle](https://sirleonarddaragan.github.io/cybernetic-iching/) · [Amazon (`B0HBRG2WMV`)](https://www.amazon.com/dp/B0HBRG2WMV)
+* **The Cybernetic Red Book:** [Live Cleanroom](https://sirleonarddaragan.github.io/cybernetic-red-book/) · [Amazon (`B0HP8N6D8Y`)](https://www.amazon.com/dp/B0HP8N6D8Y)
+* **The Shadow at Gunner's Hall *(This Archive)*:** [Live Dossier](https://sirleonarddaragan.github.io/poe-1849/) · [Amazon (`B0HN98S77P`)](https://www.amazon.com/dp/B0HN98S77P)
 
 ---
 
-### Method 2: Drag & Drop via GitHub Web
-1. Go to `https://github.com/new` while logged into `sirleonarddaragan`.
-2. Name the repository `poe-1849`.
-3. Drag and drop `index.html` and the `assets` folder directly into GitHub.
-4. Enable GitHub Pages under **Settings ➔ Pages**.
+## ☕ Support the Archive
+* **[Sponsor Research & Compute on Ko-fi](https://ko-fi.com/sirleonarddaragan)**
+* **[Subscribe to Dispatches on Substack](https://sirleonarddaragan.substack.com)**

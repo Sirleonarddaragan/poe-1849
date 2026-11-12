@@ -1097,6 +1097,11 @@
     grid-template-columns: 1fr;
   }
 }
+@media (min-width: 741px) {
+  .eco-card.eco-span-full {
+    grid-column: span 2;
+  }
+}
 .eco-card {
   background: #0d121f;
   border: 1px solid #1e293b;
@@ -1253,8 +1258,11 @@
       </div>
     </a>
     <div class="header-controls">
+      <a href="https://ko-fi.com/sirleonarddaragan" target="_blank" rel="noopener noreferrer" class="btn-toggle" style="text-decoration:none; border-color:#13c3ff; color:#38bdf8;" title="Fuel the Archive on Ko-fi">
+        <span>☕</span> Ko-fi
+      </a>
       <button onclick="openEcosystemModal()" class="btn-toggle btn-constellation" id="constellationBtn">
-        <span>◈</span> <span id="t-constellation-label">All Books &amp; Runtimes</span>
+        <span>◈</span> <span id="t-constellation-label">All 5 Systems</span>
       </button>
       <button id="soundToggle" class="btn-toggle" title="Toggle Atmospheric Audio">
         <span id="soundIcon">🔊</span> <span id="soundText">Sound ON</span>
@@ -1929,7 +1937,7 @@
       <div>
         <div class="eco-header-eyebrow">CODEX PRESS // DISTRIBUTED SYSTEMS &amp; ARCHIVE FOLIOS</div>
         <div class="eco-header-title">◈ THE DARAGAN CODEX CONSTELLATION</div>
-        <div class="eco-header-desc">Four sovereign interactive runtimes and companion volumes by Sir Leonard Daragan.</div>
+        <div class="eco-header-desc">Five sovereign interactive runtimes and companion volumes by Sir Leonard Daragan.</div>
       </div>
       <button class="eco-close-btn" onclick="closeEcosystemModal()" title="Close">&times;</button>
     </div>
@@ -1964,7 +1972,7 @@
       <!-- Volume 2: The Cybernetic Red Book -->
       <div class="eco-card">
         <div class="eco-card-header">
-          <div class="eco-tag">WESTERN CYBERNETICS // VOL 1</div>
+          <div class="eco-tag">STANDALONE CODEX // HARDCOVER &amp; KINDLE</div>
           <div class="eco-badge-current" style="border-color:#334155; color:#94a3b8; background:transparent;">EXTERNAL RUNTIME</div>
         </div>
         <div class="eco-card-title">The Cybernetic Red Book</div>
@@ -2035,6 +2043,33 @@
           </a>
           <a href="https://www.amazon.com/author/sirleonarddaragan" target="_blank" rel="noopener" class="eco-btn-book">
             <span>📖</span> Manual
+          </a>
+        </div>
+      </div>
+
+      <!-- Volume 5: The Arcane Liquidator (Ring -2) -->
+      <div class="eco-card eco-span-full">
+        <div class="eco-card-header">
+          <div class="eco-tag">RING -2 CASE FILES // SPECIAL MASTER RECEIVERSHIP</div>
+          <div class="eco-badge-current" style="border-color:#334155; color:#94a3b8; background:transparent;">EXTERNAL RUNTIME</div>
+        </div>
+        <div class="eco-card-title">The Arcane Liquidator // Default Judgment</div>
+        <div class="eco-card-sub">Statutory Receivership &amp; Metrological Parity Suite for Corporate Entity Insolvent Estates</div>
+        <p class="eco-card-desc">
+          Official operational runtime accompanying Volume 1 of The Ring -2 Case Files. Features the 5×5 Martial Wafq parity lock, 0.100 Hz autonomic Faraday cage, Sub-Level 2 telemetry, and the $421.84M USD forensic restitution ledger.
+        </p>
+        <div class="eco-card-pills">
+          <span>5×5 Wafq Resection</span>
+          <span>0.100 Hz Vagal Lock</span>
+          <span>‘Ilm al-Ḥurūf Compiler</span>
+          <span>$421.84M Restitution Escrow</span>
+        </div>
+        <div class="eco-card-actions">
+          <a href="https://sirleonarddaragan.github.io/ring-minus-two/" target="_blank" rel="noopener" class="eco-btn-run">
+            <span>⚡</span> DIFC Terminal
+          </a>
+          <a href="https://www.amazon.com/author/sirleonarddaragan" target="_blank" rel="noopener" class="eco-btn-book">
+            <span>📖</span> Amazon Catalog
           </a>
         </div>
       </div>
